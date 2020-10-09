@@ -1,0 +1,285 @@
+set nocp
+set encoding=utf-8
+let g:myvimfiles = substitute(expand('$MYVIMRC'), '.[^/\\]*$', '', '')
+" plugin {{{
+    " setup {{{
+        if empty(glob(g:myvimfiles . '/autoload/plug.vim'))
+        silent !curl -fLo g:myvimfiles/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        " autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+        endif
+    " }}}
+    call plug#begin(g:myvimfiles . '/plugged')
+    " Plug 'morhetz/gruvbox'
+    Plug 'nanotech/jellybeans.vim'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    " Plug 'vim-latex/vim-latex'
+    " Plug 'sillybun/vim-repl'
+    " Plug 'tikhomirov/vim-glsl'
+    " Plug 'vim/killersheep'
+    let g:repl_program = {
+                \   'python': 'ipython',
+                \   'default': 'powershell',
+                \   'r': 'R',
+                \   'lua': 'lua',
+                \   }
+    let g:repl_predefine_python = {
+                \   'numpy': 'import numpy as np',
+                \   }
+    let g:repl_cursor_down = 1
+    let g:repl_python_automerge = 1
+    let g:repl_ipython_version = '7'
+    nnoremap <leader>r :REPLToggle<Cr>
+    autocmd Filetype python nnoremap <F2> <Esc>:REPLDebugStopAtCurrentLine<Cr>
+    autocmd Filetype python nnoremap <F8> <Esc>:REPLPDBN<Cr>
+    autocmd Filetype python nnoremap <F7> <Esc>:REPLPDBS<Cr>
+    let g:repl_position = 3
+    " Plug 'ycm-core/YouCompleteMe'
+    call plug#end()
+" }}}
+filetype plugin indent on
+" ftplugin {{{
+    let g:pydiction_location = $vim . '/vimfiles/ftplugin/complete-dict'
+" }}}
+" set up {{{
+    let g:is_gui = has('gui_running')
+" }}}
+syntax enable
+
+" control {{{
+    " scroll {{{
+        set scroll=5
+        set scrolloff=5
+        set sidescroll=5
+        set sidescrolloff=5
+    " }}}
+    " search {{{
+        set incsearch
+        set hlsearch
+        set wrapscan
+    " }}}
+    " map {{{
+        " nnoremap j gj
+        " nnoremap k gk
+        let mapleader=" "
+        nnoremap <leader>t :tabe<CR>
+        nnoremap <leader>n :tabn<CR>
+        nnoremap <leader>N :-tabn<CR>
+        nnoremap <up> :res+3<CR>
+        nnoremap <down> :res-3<CR>
+        nnoremap <left> :vert res-6<CR>
+        nnoremap <right> :vert res+6<CR>
+        nnoremap <F5> <Esc>:so $myvimrc<CR>
+        inoremap <up> <ESC>:res+3<CR>a
+        inoremap <down> <ESC>:res-3<CR>a
+        inoremap <left> <ESC>:vert res-6<CR>a
+        inoremap <right> <ESC>:vert res+6<CR>a
+    " comment {{{
+        let s:comment_map = {
+            \  "c": '\/\/',
+            \  "cpp": '\/\/',
+            \  "go": '\/\/',
+            \  "java": '\/\/',
+            \  "javascript": '\/\/',
+            \  "lua": '--',
+            \  "scala": '\/\/',
+            \  "php": '\/\/',
+            \  "python": '#',
+            \  "ruby": '#',
+            \  "rust": '\/\/',
+            \  "sh": '#',
+            \  "desktop": '#',
+            \  "fstab": '#',
+            \  "conf": '#',
+            \  "profile": '#',
+            \  "bashrc": '#',
+            \  "bash_profile": '#',
+            \  "mail": '>',
+            \  "eml": '>',
+            \  "bat": 'REM',
+            \  "ahk": ';',
+            \  "vim": '"',
+            \  "tex": '%',
+            \  "glsl": '\/\/'
+            \ }
+        nnoremap <leader>c :call ToggleComment()<cr>
+        vnoremap <leader>c :call ToggleComment()<cr>
+    " }}}
+    " }}}
+" }}}
+
+" text {{{
+    " indent {{{
+        set cindent
+        set autoindent
+        set expandtab
+        set tabstop=4
+        set softtabstop=-1
+        set shiftwidth=0
+        set shiftround
+        augroup set_py
+            au!
+            au FileType python setl tabstop=4 softtabstop=-1 shiftwidth=0
+            au BufNewFile *.py call NewFile()
+        augroup END
+    " }}}
+    " wrap {{{
+        set textwidth=0
+        set wrap
+    " }}}
+    set backspace=indent,start,eol
+    set nrformats=alpha,octal,bin,hex
+" }}}
+
+" display {{{
+    " number {{{
+        set nu
+        set rnu
+        augroup set_nu
+            au!
+            au InsertEnter * :set nornu
+            au InsertLeave * :set rnu
+        augroup END
+        set numberwidth=4
+    " }}}
+    " cursor {{{
+        " if &ttytype ==# 'xterm'
+        if !g:is_gui
+            let &t_ti .= "\<Esc>[1 q"
+            let &t_SI .= "\<Esc>[5 q"
+            let &t_EI .= "\<Esc>[1 q"
+            let &t_SR .= "\<Esc>[3 q"
+            let &t_te .= "\<Esc>[0 q"
+        else
+            set cursorline
+            set cursorcolumn
+            " let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+            " let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+            " let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+        end
+    " }}}
+    " char {{{
+        set display=truncate
+        set list
+        if has('multi_byte') && &encoding ==# 'utf-8'
+            let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:▫'
+        else
+            let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.,trail:.'
+        endif
+    " }}}
+    " colorscheme {{{
+        if !g:is_gui && &t_Co != 256
+            colorscheme jellybeans
+            set background=light
+        else
+            " colorscheme gruvbox
+            set background=dark
+        end
+        let g:airline_theme='wombat'
+        set synmaxcol=200
+    " }}}
+    " statusline {{{
+        set ruler
+        set showcmd
+        set showmode
+        set laststatus=2
+        set report=0
+        set wildmenu
+    " }}}
+    " fold {{{
+        set foldmarker={{{,}}}
+        set foldmethod=indent
+        set foldcolumn=1
+        set foldlevel=2
+        augroup fold
+            au!
+            au FileType vim setl foldmethod=marker foldenable
+            " au FileType c,cpp setl foldmarker=#if,#endif foldmethod=marker foldenable 
+        augroup END
+    " }}}
+" }}}
+
+" term {{{
+    set hidden
+    set ttyfast
+    set lazyredraw
+    set splitbelow
+    set splitright
+" }}}
+
+" backup {{{
+    " Put all temporary files under the same directory.
+    " https://github.com/mhinz/vim-galore#handling-backup-swap-undo-and-viminfo-files
+    set backup
+    let &backupdir   =g:myvimfiles . "/files/backup/"
+    set backupext   =-vimbackup
+    set backupskip  =
+    let &directory   =g:myvimfiles . "/files/swap//"
+    set updatecount =100
+    set undofile
+    let &undodir     =g:myvimfiles . "/files/undo/"
+    let &viminfo     ="'100,n" . g:myvimfiles . "/files/info/viminfo"
+" }}}
+
+" compatible {{{
+    " The fish shell is not very compatible to other shells and
+    " unexpectedly breaks things that use 'shell'.
+    if &shell =~# 'fish$'
+        set shell=/bin/bash
+    endif
+" }}}
+
+" gui {{{
+    if g:is_gui
+    " try
+        set guifont=Dejavu_sans_mono:w9.5:h18 ",Sarasa_mono_sc:h18:cG
+    " catch /E596:/
+        " set guifont=:h18
+    " endtry
+        set guioptions-=TrLmbe
+        if has('libcall')
+            map <F11> <Esc>:call FullScreen()<CR>
+        endif
+    endif
+" }}}
+
+" functions {{{
+    " comments {{{
+        function ToggleComment()
+            if has_key(s:comment_map, &filetype)
+                let comment_leader = s:comment_map[&filetype]
+                if getline('.') =~ "^\\s*" . comment_leader
+                " Uncomment the line
+                    execute"silent s/^\\(\\s*\\)" . comment_leader ."\\s\\=/\\1/"
+                else
+                " Comment the line
+                    execute"silent s/^\\(\\s*\\)/\\1" . comment_leader ." /"
+                end
+            else
+                echo"No comment leader found for filetype"
+            end
+        endfunction
+    " }}}
+    " full screen {{{
+        if g:is_gui
+            function FullScreen()
+                call libcallnr("gvim_fullscreen.dll", "ToggleFullScreen", 0)
+            endfunction
+            " call FullScreen()
+            " call FullScreen()
+        endif
+    " }}}
+    " newfile {{{
+        function NewFile()
+            if &filetype=="python"
+                call append(0, [
+                    \ "#!/usr/bin/env python3",
+                    \ "# -*- encoding:utf-8 -*-"
+                    \ ])
+            endif
+        endfunction
+    " }}}
+" }}}
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
