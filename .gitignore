@@ -1,0 +1,8 @@
+*
+
+!.gitignore
+!.bashrc
+!.xbindkeysrc
+!.xinitrc
+!.Xresources
+
