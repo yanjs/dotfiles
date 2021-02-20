@@ -1,48 +1,7 @@
 set nocp
 set encoding=utf-8
-let g:myvimfiles = substitute(expand('$MYVIMRC'), '.[^/\\]*$', '', '')
-" plugin {{{
-    " setup {{{
-        if empty(glob(g:myvimfiles . '/autoload/plug.vim'))
-        silent !curl -fLo g:myvimfiles/autoload/plug.vim --create-dirs
-            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        " autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-        endif
-    " }}}
-    call plug#begin(g:myvimfiles . '/plugged')
-    " Plug 'morhetz/gruvbox'
-    Plug 'nanotech/jellybeans.vim'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    " Plug 'vim-latex/vim-latex'
-    " Plug 'sillybun/vim-repl'
-    " Plug 'tikhomirov/vim-glsl'
-    " Plug 'vim/killersheep'
-    let g:repl_program = {
-                \   'python': 'ipython',
-                \   'default': 'powershell',
-                \   'r': 'R',
-                \   'lua': 'lua',
-                \   }
-    let g:repl_predefine_python = {
-                \   'numpy': 'import numpy as np',
-                \   }
-    let g:repl_cursor_down = 1
-    let g:repl_python_automerge = 1
-    let g:repl_ipython_version = '7'
-    nnoremap <leader>r :REPLToggle<Cr>
-    autocmd Filetype python nnoremap <F2> <Esc>:REPLDebugStopAtCurrentLine<Cr>
-    autocmd Filetype python nnoremap <F8> <Esc>:REPLPDBN<Cr>
-    autocmd Filetype python nnoremap <F7> <Esc>:REPLPDBS<Cr>
-    let g:repl_position = 3
-    " Plug 'ycm-core/YouCompleteMe'
-    call plug#end()
-" }}}
-filetype plugin indent on
-" ftplugin {{{
-    let g:pydiction_location = $vim . '/vimfiles/ftplugin/complete-dict'
-" }}}
 " set up {{{
+    let g:myvimfiles = substitute(expand('$MYVIMRC'), '.[^/\\]*$', '', '')
     let g:is_gui = has('gui_running')
 " }}}
 syntax enable
@@ -60,22 +19,13 @@ syntax enable
         set wrapscan
     " }}}
     " map {{{
-        " nnoremap j gj
-        " nnoremap k gk
         let mapleader=" "
         so $HOME/.vim/colemak.vim
-        nnoremap <leader>t :tabe<CR>
-        nnoremap <leader>n :tabn<CR>
-        nnoremap <leader>N :-tabn<CR>
         nnoremap <up> :res+3<CR>
         nnoremap <down> :res-3<CR>
         nnoremap <left> :vert res-6<CR>
         nnoremap <right> :vert res+6<CR>
-        nnoremap <F5> <Esc>:so $myvimrc<CR>
-        inoremap <up> <ESC>:res+3<CR>a
-        inoremap <down> <ESC>:res-3<CR>a
-        inoremap <left> <ESC>:vert res-6<CR>a
-        inoremap <right> <ESC>:vert res+6<CR>a
+        nnoremap <F5> <Esc>:so $MYVIMRC<CR>
     " comment {{{
         let s:comment_map = {
             \  "c": '\/\/',
@@ -102,7 +52,8 @@ syntax enable
             \  "ahk": ';',
             \  "vim": '"',
             \  "tex": '%',
-            \  "glsl": '\/\/'
+            \  "glsl": '\/\/',
+            \  "rkt": ';'
             \ }
         nnoremap <leader>c :call ToggleComment()<cr>
         vnoremap <leader>c :call ToggleComment()<cr>
