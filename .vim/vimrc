@@ -63,6 +63,7 @@ syntax enable
         " nnoremap j gj
         " nnoremap k gk
         let mapleader=" "
+        so $HOME/.vim/colemak.vim
         nnoremap <leader>t :tabe<CR>
         nnoremap <leader>n :tabn<CR>
         nnoremap <leader>N :-tabn<CR>
@@ -190,8 +191,8 @@ syntax enable
     " fold {{{
         set foldmarker={{{,}}}
         set foldmethod=indent
-        set foldcolumn=1
-        set foldlevel=2
+        " set foldcolumn=1
+        " set foldlevel=0
         augroup fold
             au!
             au FileType vim setl foldmethod=marker foldenable
@@ -262,13 +263,13 @@ syntax enable
         endfunction
     " }}}
     " full screen {{{
-        if g:is_gui
-            function FullScreen()
-                call libcallnr("gvim_fullscreen.dll", "ToggleFullScreen", 0)
-            endfunction
+        " if g:is_gui
+            " function FullScreen()
+                " call libcallnr("gvim_fullscreen.dll", "ToggleFullScreen", 0)
+            " endfunction
             " call FullScreen()
             " call FullScreen()
-        endif
+        " endif
     " }}}
     " newfile {{{
         function NewFile()
@@ -276,6 +277,10 @@ syntax enable
                 call append(0, [
                     \ "#!/usr/bin/env python3",
                     \ "# -*- encoding:utf-8 -*-"
+                    \ ])
+            elseif &filetype=="sh"
+                call append(0, [
+                    \ "#!/bin/sh"
                     \ ])
             endif
         endfunction

@@ -11,13 +11,11 @@ URxvt*font: xft:Dejavu Sans Mono:size=12,\
             xft:TH-Sung-TP2:size=12
 !URxvt*font: xft:Dejavu Sans Mono:size=12,xft:TH\-Sung\-TP0:size=12,xft:TH\-Sung\-TP2:size=12
 URxvt*visualBell: True
-URxvt*background: [20]black
+URxvt*depth: 32
+URxvt*background: [85]black
 URxvt*foreground: lightgray
 URxvt*scrollBar: False
 !URxvt*letterSpace: -1
-URxvt*inheritPixmap: True
-URxvt*transparency: True
-URxvt*shading: 15
 URxvt.keysym.Control-Up:     \033[1;5A
 URxvt.keysym.Control-Down:   \033[1;5B
 URxvt.keysym.Control-Left:   \033[1;5D

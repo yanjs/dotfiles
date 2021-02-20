@@ -1,7 +1,14 @@
+sleep 1
+
 # keys
 # setxkbmap -variant colemak
 xbindkeys
-setxkbmap -option caps:escape
+setxkbmap -option caps:ctrl_modifier
+xcape -e 'Caps_Lock=Escape'
+xset b off
+xset b 0 0 0
+# enable APL
+setxkbmap -layout us,apl -variant colemak,dyalog -option grp:switch
 
 # input method
 # export GTK_IM_MODULE=ibus
@@ -11,7 +18,7 @@ setxkbmap -option caps:escape
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
-(sleep 2 && fcitx) &
+fcitx &
 
 # show status
 #sh ~/.local/show-status-loop.sh &
@@ -20,10 +27,14 @@ export XMODIFIERS="@im=fcitx"
 xrdb -merge $HOME/.Xresources
 
 # set transparency
-#xcompmgr -c &
+xcompmgr -c &
 
 # set wallpaper
 sh ~/.local/wallpaper.sh &
+
+# keynav
+
+keynav &
 
 #exec dwm
 

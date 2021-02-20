@@ -70,18 +70,21 @@
 ##################################
 
 # Increase volume
-"amixer set Master 3%+; sh ~/.local/show-status.sh"
-   m:0x1 + c:69
-# Decrease volume
-"amixer set Master 5%-; sh ~/.local/show-status.sh"
-   m:0x1 + c:68
-# Mute volume
-"amixer set Master toggle; sh ~/.local/show-status.sh"
-   m:0x1 + c:67
-
+#"amixer set Master 3%+" #; sh ~/.local/show-status.sh"
+#   XF86AudioRaiseVolume
+##    m:0x1 + c:69
+## # Decrease volume
+#"amixer set Master 5%-" #; sh ~/.local/show-status.sh"
+#   XF86AudioLowerVolume
+##    m:0x1 + c:68
+## # Mute volume
+#"amixer set Master toggle" #; sh ~/.local/show-status.sh"
+#   XF86AudioMute
+##    m:0x1 + c:67
+# 
 # Increase backlight
 "xbacklight -inc 3"
-   m:0x1 + c:96
+   XF86MonBrightnessUp
 # Decrease backlight
 "xbacklight -dec 5"
-   m:0x1 + c:95
+   XF86MonBrightnessDown
